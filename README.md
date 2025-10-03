@@ -11,7 +11,7 @@ Sockets Links.
 ## PROGRAM
 
 Server :
-
+```
 import socket
 
 HOST = '127.0.0.1'  
@@ -32,10 +32,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
                     break
                 conn.sendall(data)
                 print(f"Echoed: {data.decode('utf-8')}")
-
+````
 Client :
 
-
+```
 import socket
 
 HOST = '127.0.0.1'  
@@ -49,7 +49,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
 
     data = client_socket.recv(1024)
     print(f"Received echo: {data.decode('utf-8')}")
-
+```
     
 ## OUPUT
 
