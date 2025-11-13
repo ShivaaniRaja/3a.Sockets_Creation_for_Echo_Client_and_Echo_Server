@@ -12,50 +12,62 @@ Sockets Links.
 
 Server :
 ```
+# echo_server.py
 import socket
 
-HOST = '127.0.0.1'  
-PORT = 65432        
+# Step 1: Create a socket object
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-    server_socket.bind((HOST, PORT))
-    server_socket.listen()
+# Step 2: Bind to localhost and port
+server_socket.bind(('127.0.0.1', 65432))
 
-    print(f"Server is listening on {HOST}:{PORT}")
-    while True:
-        conn, addr = server_socket.accept()
-        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                conn.sendall(data)
-                print(f"Echoed: {data.decode('utf-8')}")
+# Step 3: Listen for connections
+server_socket.listen(1)
+print("Server is listening on port 65432...")
+
+# Step 4: Accept connection
+conn, addr = server_socket.accept()
+print(f"Connected by {addr}")
+
+while True:
+    data = conn.recv(1024)
+    if not data:
+        break
+    print("Received from client:", data.decode())
+    conn.sendall(data)  # Echo the data back
+
+# Step 5: Close connection
+conn.close()
+server_socket.close()
+
 ````
 Client :
 
 ```
+# echo_client.py
 import socket
 
-HOST = '127.0.0.1'  
-PORT = 65432  
+# Step 1: Create a socket object
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-    client_socket.connect((HOST, PORT))
+# Step 2: Connect to the server
+client_socket.connect(('127.0.0.1', 65432))
 
-    message = 'Hello, Server!'
-    client_socket.sendall(message.encode('utf-8'))
+# Step 3: Send data
+message = input("Enter a message to send: ")
+client_socket.sendall(message.encode())
 
-    data = client_socket.recv(1024)
-    print(f"Received echo: {data.decode('utf-8')}")
+# Step 4: Receive response
+data = client_socket.recv(1024)
+print("Echoed from server:", data.decode())
+
+# Step 5: Close connection
+client_socket.close()
 ```
     
 ## OUPUT
 
-<img width="709" height="164" alt="image" src="https://github.com/user-attachments/assets/44a4a5ad-8a83-4c5c-b27c-869a9df5f14b" />
-
-<img width="723" height="195" alt="image" src="https://github.com/user-attachments/assets/71edbbc0-d00c-41f3-99bf-37fd6a1f3c2d" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8058b34b-d0b0-4e4c-915d-af0a0187cc97" />
 
 
 ## RESULT
